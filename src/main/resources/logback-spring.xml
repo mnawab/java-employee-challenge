@@ -1,0 +1,41 @@
+<configuration scan="true">
+    <appender name="STDOUT"
+              class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <pattern>%d{yyyy-MMM-dd HH:mm:ss.SSS} [%level] %marker [%thread] [%logger] %msg%n</pattern>
+        </layout>
+    </appender>
+
+    <property name="TXT_LOG_PATH" value="${log.folder:-./logs}/java-employee-challenge.log"/>
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${TXT_LOG_PATH}</file>
+        <encoder>
+            <pattern>%date [%level] from %logger in %thread - %message%n%xException</pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${TXT_LOG_PATH}.%d{yyyy-MM-dd}.zip</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+            <MaxFileSize>200MB</MaxFileSize>
+        </triggeringPolicy>
+    </appender>
+
+    <appender name="ASYNCFILE" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="FILE"/>
+    </appender>
+
+
+    <logger name="application" level="INFO"/>
+    <logger name="org.springframework">
+        <level value="info" />
+    </logger>
+    <logger name="wiremock.org.eclipse">
+        <level value="warn"/>
+    </logger>
+
+    <root level="INFO">
+        <appender-ref ref="STDOUT" />
+        <appender-ref ref="ASYNCFILE"/>
+    </root>
+</configuration>

@@ -1,0 +1,23 @@
+server:
+  port: 8585
+
+management:
+  endpoints:
+    web:
+      base-path: /
+      exposure:
+        include: [health]
+
+logging:
+  config: classpath:logback-spring.xml
+
+dummy-service:
+  get-employees-url: https://dummy.restapiexample.com/api/v1/employees
+  get-employee-url: https://dummy.restapiexample.com/api/v1/employee/%s
+  delete-employee-url: https://dummy.restapiexample.com/api/v1/delete/%s
+  create-employee-url: https://dummy.restapiexample.com/api/v1/create
+  connect-timeout: 50000
+  read-timeout: 100000
+
+springdoc:
+  packagesToScan: com.example.rqchallenge.employees.controller
